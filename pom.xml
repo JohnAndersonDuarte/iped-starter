@@ -3,4 +3,53 @@
   <groupId>iped-starter</groupId>
   <artifactId>iped-starter</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+   <properties>
+  	 	<release.dir>release/lib</release.dir>
+   		<parent.root>${resources.dir}/../..</parent.root>
+  </properties>
+    
+  <dependencies>
+	  <dependency>
+	    <groupId>commons-io</groupId>
+	    <artifactId>commons-io</artifactId>
+	    <version>2.6</version>
+	  </dependency>
+  </dependencies>
+  
+   <build>
+        <plugins>
+        	 <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <id>create-jar</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>*.netbeans_automatic_build*</exclude>
+                            </excludes>
+                            <finalName>iped-starter</finalName>
+                            <outputDirectory>${release.dir}</outputDirectory>
+                            <forceCreation>true</forceCreation>
+                            <archive>                                
+                                <addMavenDescriptor>false</addMavenDescriptor>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <mainClass>br.starter.Starter</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                    
+                </executions>
+            </plugin>
+            
+           
+        </plugins>
+   </build>     
 </project>
