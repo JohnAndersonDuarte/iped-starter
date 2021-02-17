@@ -39,7 +39,7 @@
                                 <addMavenDescriptor>false</addMavenDescriptor>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
-                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <classpathPrefix></classpathPrefix>
                                     <mainClass>br.starter.Starter</mainClass>
                                 </manifest>
                             </archive>

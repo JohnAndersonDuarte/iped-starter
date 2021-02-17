@@ -123,7 +123,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     		
     /*
      * Criacao da tela inicial da aplicacao, com load do arquivo de configuracao "LocalConfig.txt"
-     * para carregamento inicial de informações pré-definidas
+     * para carregamento inicial de informacoes pre-definidas
      */
     public StartFrame() {
         super("("+Messages.getString("StartFrame.title")+")");
@@ -137,6 +137,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
         
         try {
 			this.rootPath = System.getProperty("user.dir");
+			
         } catch (Exception e) {
 			e.printStackTrace();
 		}    
@@ -619,7 +620,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     }
     
     /*
-     * Retorna a lista de informações contidas no arquivo "LocalConfig.txt"
+     * Retorna a lista de informacoes contidas no arquivo "LocalConfig.txt"
      * em formado de array para carregamento no JTable principal da tela.
      */
     private Object[][] getRowsData(List<RowModel> listRowModel) {
@@ -638,13 +639,14 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     }
     
     /*
-     * Método que cria os campos de configuracao de acordo com cada linha de configuracao
+     * Metodo que cria os campos de configuracao de acordo com cada linha de configuracao
      */
     @SuppressWarnings("serial")
 	public class CustomTableCellEditor extends AbstractCellEditor implements TableCellEditor {
         private TableCellEditor editor;
         public List<RowModel> listConfig = new ArrayList<RowModel>();
         public boolean isLocalConfig = false;
+        
         public Object getCellEditorValue() {
             if (editor != null) {
                 return editor.getCellEditorValue();
@@ -662,7 +664,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
         			if(isLocalConfig) {
 	        			if(row == 0) {//Identifica o campo locale 
 	        				((ComboBoxEditor)editor).setId("locale");
-	        			} else if(row == 1) {//Identifica o campo de configuracao do caso pois a partir dele as demais configurações são carregadas 
+	        			} else if(row == 1) {//Identifica o campo de configuracao do caso pois a partir dele as demais configuracoes sao carregadas 
 	        				((ComboBoxEditor)editor).setId("caseConfig");
 	        			}
         			}
@@ -757,7 +759,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     /*
      * Monta o conteúdo do campo CaseConfig de acordo com os nomes
      * das pastas do diret�rio /profiles/[locale]/, esse diret�rio 
-     * é utilizado para mantes as configurações de diferentes formatos
+     * e utilizado para mantes as configuracoes de diferentes formatos
      * de casos
      */
     private String[] getListConfigs() {
@@ -787,7 +789,6 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     	try {
 	        UTF8Properties props = new UTF8Properties();
 	        props.load(new File(this.rootPath, Configuration.LOCAL_CONFIG));
-	        props.load(new File(this.rootPath, ""));
 	        this.localProperties = props;
         
     	} catch(Exception e) {
@@ -808,13 +809,14 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     		//do IPED, ao encontrar o arquivo LocalConfig o rootPath 
     		//sera definido corretamento
     		if(seq == 0) {
-    			this.rootPath = this.rootPath + "\\release";
+    			this.rootPath = this.rootPath + "\\release\\";
     	        	
     		} else if(seq == 1) {
-    			this.rootPath = rootPath.substring(0, this.rootPath.lastIndexOf("\\"));
+    			this.rootPath = rootPath.substring(0, this.rootPath.lastIndexOf("lib"));
     			
     		}
     		
+    		System.out.println("this.rootPath:"+this.rootPath);
     		props.load(new File(this.rootPath, Configuration.LOCAL_CONFIG));
 	        this.localProperties = props;
         
@@ -920,17 +922,17 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
         }
     }
     
-    //AÇÕES DA TELA
+    //ACOES DA TELA
     
     /*
-     * Método que controla o evento do botão salvar, esse método faz a leitura das configurações
+     * Metodo que controla o evento do botao salvar, esse metodo faz a leitura das configuracoes
      * que o usuario fez e altera os arquivos de configuracao de forma a trocar apenas os valores 
      * de cada configuracao, sem alterar os demais conteúdos, para isso a rotina percorre linha a 
      * linha procurando as chaves que devem serem alteras.
      */
     private void saveConfig() {
     	try {
-	    	/*String path = this.rootPath + "" + Configuration.LOCAL_CONFIG;
+	    	String path = this.rootPath + "" + Configuration.LOCAL_CONFIG;
 	    	
 	    	//LocalConfig
 	    	this.loadValuesFromJTable(this.tableLocalConfig, this.listLocalConfig);
@@ -938,12 +940,12 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
 
 	    	//IPED Config
 	    	this.loadValuesFromJTable(this.tableIpedConfig, this.listIpedConfig);
-	    	String pathIpedConfig = this.rootPath + "profiles/"+ this.locale + "/" + this.caseConfig + "/" + Configuration.CONFIG_FILE;
+	    	String pathIpedConfig = this.rootPath + "profiles\\"+ this.locale + "\\" + this.caseConfig + "\\" + Configuration.CONFIG_FILE;
 	    	this.saveFile(pathIpedConfig, this.listIpedConfig);
 
 	    	
 	    	JOptionPane.showMessageDialog(null, Messages.getString("StartFrame.saveSuccess"));
-	    	*/
+	    	
 	    	
     	} catch(Exception e) {
     		JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), Messages.getString("StartFrame.warning"),  JOptionPane.WARNING_MESSAGE);
@@ -968,15 +970,15 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     }
     
     /*
-     *	Método que faz uma leitura linha a linha do arquivo de configuracao e 
+     *	Metodo que faz uma leitura linha a linha do arquivo de configuracao e 
      *  altera somente o conteúdo da variavel alterada pela tela, assim mantemos
-     *  o padrão dos arquivos de configuracao e evitamos de perder informações
+     *  o padrao dos arquivos de configuracao e evitamos de perder informacoes
      *  como comentarios ou chaves comentadas. 
      */
     private void saveFile(String path, List<RowModel> listRowModel) {
     	try {
     		
-    		//Mantém todas as chaves encontradas no arquivo;
+    		//Mantem todas as chaves encontradas no arquivo;
     		Map<String, String> mapKeys = new HashMap<String, String>();
     		for(RowModel rowModel : listRowModel) {
     			mapKeys.put(rowModel.getKey(), "N");
@@ -997,8 +999,8 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
 	    	
 	    	String fileContent = sb.toString();
 	    	
-	    	//Ap�s percorrer o arquivo alterando os registros existentes é necessario incluir
-	    	//as configurações queestão marcadas na tela mas não estão salvas no arquivo.
+	    	//Ap�s percorrer o arquivo alterando os registros existentes e necessario incluir
+	    	//as configuracoes queestao marcadas na tela mas nao estao salvas no arquivo.
 	    	String newLinesTxt = "";
 	    	for(RowModel rowModel : listRowModel) {
 	    		boolean insertKey = !"Y".equalsIgnoreCase(mapKeys.get(rowModel.getKey())) && !"Y".equalsIgnoreCase(mapKeys.get(rowModel.getKey()).replace("#", "")); 
@@ -1009,6 +1011,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
 	    	}
 	    	fileContent = fileContent+newLinesTxt;
 	    	
+	    	System.out.println("path:"+path);
 	    	FileUtils.writeStringToFile(new File(path), fileContent, "UTF-8");
 	    	
 	    	
@@ -1048,7 +1051,7 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     //MONTAGEM DAS TABS DA TELA
     private JTabbedPane createTabPanel() {
     	this.loadTabsConfig(true);//Carrega todos os arquivos de configuracao da aplicacao 
-    	this.loadListIpedConfig();//Carrega a lista de RowModel para configurações do IPED
+    	this.loadListIpedConfig();//Carrega a lista de RowModel para configuracoes do IPED
     	
     	this.loadListAdvancedConfig();
     	this.loadListAudioConfig();
@@ -1173,9 +1176,9 @@ public class StartFrame extends JFrame implements PropertyChangeListener, Window
     }
     
     /*
-     * Método responsavel por realizar a leitura dos arquivos de configuracao de 
+     * Metodo responsavel por realizar a leitura dos arquivos de configuracao de 
      * acordo com a configuracao de caso escolhida, essa rotina percorre o diret�rio correspondente
-     * e obtém os dados dos arquivos IPEDConfig.txt, AdvancedConfig.txt, AudioTranscriptConfig.txt,
+     * e obtem os dados dos arquivos IPEDConfig.txt, AdvancedConfig.txt, AudioTranscriptConfig.txt,
      * ElasticSearchConfig.txt, HTMLReportConfig.txt, ImageThumbsConfig.txt, KeywordsToExport.txt,
      * PhotoDNAConfig.txt, RegexConfig.txt, VideoThumbsConfig.txt.
      */
