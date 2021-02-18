@@ -28,7 +28,7 @@ public class Starter extends SwingWorker<Boolean, Integer> {
     }
 
     /**
-     * Entrada principal da aplicação para processamento de evidências
+     * Entrada principal da aplicacao para processamento de evidências
      */
     public static void main(String[] args) {
     	StartFrame startFrame = new StartFrame();
